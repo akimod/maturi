@@ -1,7 +1,7 @@
 <?php
 
 /***************** データベース情報等の読み込み *********/
-require_once("data\db_info.php");
+require_once("C:\MAMP\htdocs\data\db_info.php");
 /***************** データベースへ接続、データベースの選択 *********/
 $s = new pdo("mysql:host=$SERV;dbname=$DBNM",$USER,$PASS);
 /*****************  タイトル,画像等の表示 *********/
