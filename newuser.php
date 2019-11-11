@@ -5,9 +5,9 @@ require_once("C:\MAMP\htdocs\data\db_info.php");
 $s = new pdo("mysql:host=$SERV;dbname=$DBNM",$USER,$PASS);
 
 
-$u_name=isset($_GET["u_name"])? htmlspecialchars($_GET["u_name"]):null;
-$u_password=isset($_GET["u_password"])? htmlspecialchars($_GET["u_password"]):null;
-if($u_name<>""){
+$u_name=isset($_POST["u_name"])? htmlspecialchars($_POST["u_name"]):null;
+$u_password=isset($_POST["u_password"])? htmlspecialchars($_POST["u_password"]):null;
+if($u_name<>"" && $u_password<>""){
 	$s->query("insert into login(username,password) values('$u_name','$u_password')");
   print "ユーザーを作成しました";
   sleep(2);
@@ -25,9 +25,11 @@ print <<<eot1
   <div style="font-size:20pt">(新規ユーザー登録)</div>
   新しくユーザーを投稿するときは、ここから
   <br>
-  <form method="GET" action="newuser.php">
-  新しく登録するユーザーの名前
+  <form method="POST" action="newuser.php">
+	<label>UserName :</label>
   <input type="text" name="u_name" size="50">
+	<br>
+	<label>Password :</label>
   <input type="text" name="u_password" size="50">
   <div><input type="submit" value="作成"></div>
   </form>

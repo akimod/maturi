@@ -8,6 +8,19 @@ $s = new pdo("mysql:host=$SERV;dbname=$DBNM",$USER,$PASS);
 print <<<eot0
 <h2 id="logout"><a href="logout.php">Log Out</a></h2>
 eot0;
+/**    ユーザー別表記テスト用スレッド**/
+if($login_session=="sample"){
+print <<< sample
+<h2>ようこそ $login_session さん</h2>
+sample;
+}
+elseif($login_session=="test"){
+print <<< test
+<h2>ようこそ $login_session さん</h2>
+test;
+}
+/***   ユーザー別表記テスト用スレッド end **/
+
 /***コメントだよどうしようかな/
 .
 print <<<eot1
@@ -52,6 +65,11 @@ $kekka[2]作成
 </form>
 eot2_3;
 }
+
+
+
+
+
 /***************** スレッド作成用フォーム、検索フォームへのリンク *********/
 print <<<eot3
 	<hr>

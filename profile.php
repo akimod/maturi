@@ -13,6 +13,8 @@ include('session.php');
 <b id="logout"><a href="logout.php">Log Out</a></b>
 <hr>
 <b id="maturi"><a href="maturi_after_login.php">maturi_after_login</a></b>
+<br>
+<b id="maturi"><a href="mypage.php">マイページへ</a></b>
 </div>
 </body>
 </html>
