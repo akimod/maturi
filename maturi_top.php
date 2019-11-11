@@ -50,7 +50,7 @@ print <<<eot3
 	<a href="keizi_search.php">検索するときはここをクリック</a>
 	<hr>
 	<span style="font-size:20pt">(祭りに参加したい方、祭りを主催する方)</span>
-	<a href="maturi_after_login.php">ログインするときはここをクリック</a>
+	<a href="index.php">ログインするときはここをクリック</a>
 	<hr>
 	</body>
 	</html>
