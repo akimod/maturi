@@ -33,10 +33,10 @@ print <<<eot1_2
 <div style="font-size:20pt">(祭り一覧)</div>
 eot1_2;
 
-$re=$s->query("select * from tbj0");
+$re=$s->query("select * from maturi_info");
 while($kekka=$re->fetch()){
 print <<<eot2_3
-<a href="keizi.php?gu=$kekka[0]">$kekka[0] $kekka[1]</a>
+<a href="nouser_keizi.php?gu=$kekka[0]">$kekka[0] $kekka[1]</a>
 <br>
 $kekka[2]作成
 <br>
