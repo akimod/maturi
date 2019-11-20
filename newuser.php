@@ -7,8 +7,9 @@ $s = new pdo("mysql:host=$SERV;dbname=$DBNM",$USER,$PASS);
 
 $u_name=isset($_POST["u_name"])? htmlspecialchars($_POST["u_name"]):null;
 $u_password=isset($_POST["u_password"])? htmlspecialchars($_POST["u_password"]):null;
-if($u_name<>"" && $u_password<>""){
-	$s->query("insert into login(username,password) values('$u_name','$u_password')");
+$u_type=isset($_POST["u_type"])? htmlspecialchars($_POST["u_type"]):null;
+if($u_name<>"" && $u_password<>"" && $u_type<>""){
+	$s->query("insert into login(username,password,user_type) values('$u_name','$u_password','$u_type')");
   print "ユーザーを作成しました";
   sleep(2);
   header("location: index.php");
@@ -30,8 +31,14 @@ print <<<eot1
   <input type="text" name="u_name" size="50">
 	<br>
 	<label>Password :</label>
-  <input type="text" name="u_password" size="50">
-  <div><input type="submit" value="作成"></div>
+  <input type="text" name="u_password" size="50" >
+	<br>
+	<label>user_type :</label>
+	<select name="u_type">
+	<option value="organizer">主催者</option>
+	<option value="participant">参加者</option>
+	</select>
+	<div><input type="submit" value="作成"></div>
   </form>
   <hr>
   </body>

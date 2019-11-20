@@ -2,6 +2,7 @@
 
 /*********************データベース情報等の読み込み **********/
 require_once("C:\MAMP\htdocs\data\db_info.php");
+include('session.php');
 
 
 /********************* データベースへ接続、データベース選択 **********/
@@ -10,6 +11,7 @@ $s = new pdo("mysql:host=$SERV;dbname=$DBNM",$USER,$PASS);
 
 /********************* スレッドグループ番号(gu)を取得し$gu_dに代入 **********/
 $gu_d = $_GET["gu"];
+$attend = isset($_GET["attend"])?htmlspecialchars($_GET["attend"]):null;
 
 
 /*********************$gu_dに数字以外が含まれていたら処理を中止 **********/
@@ -53,15 +55,27 @@ print <<<eot2
 	$sure_com の祭りの情報です!
 	</div>
 	<h1>祭りのタイトル<br>$maturi_title</h1>
+	<hr>
 	<br>
 	<h2>この祭りの説明<br>$maturi_description</h2>
+	<hr>
 	<br>
 
 eot2;
 //
 //祭り説明世の画像もしくは動画を表示する
 //DBから取得して表示する．
-$sql = "SELECT * FROM maturi_media ORDER BY id;";
+$name_box=$s->query("select maturi_user_name from maturi_info");
+$name_box_after = $name_box->fetch();
+$check_user_name = $name_box_after[0];
+print 'この祭りのデータは';
+print $check_user_name;
+print 'が作った';
+print '<hr>';
+
+
+try{
+$sql = "SELECT * FROM maturi_media where maturi_user_name like '$check_user_name'";
 $stmt = $s->prepare($sql);
 $stmt -> execute();
 while ($row = $stmt -> fetch(PDO::FETCH_ASSOC)){
@@ -76,11 +90,26 @@ while ($row = $stmt -> fetch(PDO::FETCH_ASSOC)){
 		}
 		echo ("<br/><br/>");
 }
+}catch(PDOException $e){
+	die($e->getMessage());
+}
+
+print '<hr>';
 
 
 /*********************  名前($na_d)が入力されていればtbj1にレコードを挿入 **********/
 if($na_d<>""){
 	$s->query("insert into tbj1 values (0,'$na_d','$me_d',now(),'$gu_d','$ip')");
+}
+
+/*********************  (attend)が入力されていればmaturi_attendにレコードを挿入 **********/
+if($attend<>""){
+	try{
+		$s->query("insert into maturi_attend values(0,'$login_session','$maturi_title')");
+		print '祭りの参加登録が完了しました';
+	}catch(PDOException $e){
+		die($e->getMessage());
+	}
 }
 /*********************  水平線表示 **********/
 print	"<h2>$sure_com のメッセージ</h2>";
@@ -112,8 +141,7 @@ print <<<eot3
 	</form>
 	<hr>
 	<a href="maturi_after_login.php">スレッド一覧に戻る</a>
-	</body>
-	</html>
+	<br>
 eot3;
 
 /*********************  $gu_dに数字以外も、数字も含まれていないときの処理 **********/
@@ -121,4 +149,23 @@ eot3;
 	print "スレッドを選択してください。<br>";
 	print "<a href='maturi_after_login.php'>ここをクリックしてスレッド一覧に戻ってください</a>";
 }
+
+$check_attend_one=$s->query("select * from maturi_attend WHERE attend_user_name like '$login_session' and attend_matu_name like '$maturi_title'");
+$check_attend_two=$check_attend_one->fetch();
+if($check_attend_two[0]<>""){
+	print "この祭りには参加登録済みです";
+}else{
+print <<<eot4
+		<form method="GET" action="keizi.php">
+		<input type="hidden" name="gu" value="$gu_d">
+		<input type="hidden" name="attend" value="attend">
+		<input type="submit" value="参加する">
+		</form>
+eot4;
+}
+
+print <<<eot5
+	</body>
+	</html>
+eot5;
 ?>

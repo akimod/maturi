@@ -11,13 +11,12 @@ require_once("C:\MAMP\htdocs\data\db_info.php");
 $s = new pdo("mysql:host=$SERV;dbname=$DBNM",$USER,$PASS);
 
 /*****************  タイトル,画像等の表示 *********/
-
 print <<<eot0
-
 <h2 id="logout"><a href="logout.php">Log Out</a></h2>
-
 eot0;
-
+print <<<eot0
+<h2 id="mypage"><a href="mypage.php">My Page</a></h2>
+eot0;
 /**    ユーザー別表記テスト用スレッド**/
 
 if($login_session=="sample"){
@@ -79,19 +78,22 @@ $ip=getenv("REMOTE_ADDR");
 /***************** スレッド名の変数$su_dにデータがあればtbj0に挿入 *********/
 
 $su_d=isset($_GET["su"])? htmlspecialchars($_GET["su"]):null;
+$description_d=isset($_GET["description"])? htmlspecialchars($_GET["description"]):null;
 
-if($su_d<>""){
-
-	$s->query("insert into tbj0(sure,niti,aipi) values('$su_d',now(),'$ip')");
-
+try{
+  $s->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+	if($su_d<>""){
+		$s->query("insert into maturi_info(sure,niti,aipi,description,maturi_user_name) values('$su_d',now(),'$ip','$description_d','$login_session')");
+	}
+}catch(PDOException $e){
+  die($e->getMessage());
 }
-
 /*******************スレッド表示用***************/
 print <<<eot1_2
 <div style="font-size:20pt">(祭り一覧)</div>
 eot1_2;
 
-$re=$s->query("select * from tbj0");
+$re=$s->query("select * from maturi_info");
 while($kekka=$re->fetch()){
 print <<<eot2_3
 <a href="keizi.php?gu=$kekka[0]">$kekka[0] $kekka[1]</a>
@@ -105,14 +107,6 @@ $kekka[2]作成
 </form>
 eot2_3;
 }
-
-
-
-
-
-
-
-
 
 
 
@@ -133,23 +127,16 @@ print <<<eot3
 	新しく投稿する祭りのタイトル
 
 	<input type="text" name="su" size="50">
-
+  <br>
+	<textarea name="description" rows = "10" cols="70"></textarea>
 	<div><input type="submit" value="作成"></div>
-
 	</form>
-
 	<hr>
-
 	<span style="font-size:20pt">(祭りの検索)</span>
-
 	<a href="keizi_search.php">検索するときはここをクリック</a>
-
 	<hr>
-
 	<span style="font-size:20pt">(祭りの投稿を削除)</span>
-
 	<a href="keizi_syokika.php">祭りの投稿を削除するにはここをクリック</a>
-
 	<hr>
 	<span style="font-size:20pt">(祭りの画像、動画を投稿したい方)</span>
 	<a href="media_index.php">ここをクリック</a>

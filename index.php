@@ -16,7 +16,7 @@ print <<<eot1
 
   <body>
     <div id="main">
-      <h1>PHP Login Session Example</h1>
+      <h1>ログイン画面</h1>
       <div id="login">
         <h2>Login Form</h2>
         <form action="" method="post">

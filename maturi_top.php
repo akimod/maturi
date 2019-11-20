@@ -46,9 +46,6 @@ eot2_3;
 /***************** スレッド作成用フォーム、検索フォームへのリンク *********/
 print <<<eot3
 	<hr>
-	<span style="font-size:20pt">(祭りの検索)</span>
-	<a href="keizi_search.php">検索するときはここをクリック</a>
-	<hr>
 	<span style="font-size:20pt">(祭りに参加したい方、祭りを主催する方)</span>
 	<a href="index.php">ログインするときはここをクリック</a>
 	<hr>
