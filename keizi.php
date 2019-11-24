@@ -41,7 +41,7 @@ $sure_com = "「".$gu_d." ".$kekka[1]."」";
 $maturi_title = $kekka[1];
 //祭りの説明を代入
 $maturi_description = $kekka[4];
-
+$check_user_name = $kekka[5];//画像表示用
 /*********************  スレッド表示のタイトル等書き出し **********/
 print <<<eot2
 	<!DOCTYPE html>
@@ -65,9 +65,6 @@ eot2;
 //
 //祭り説明世の画像もしくは動画を表示する
 //DBから取得して表示する．
-$name_box=$s->query("select maturi_user_name from maturi_info");
-$name_box_after = $name_box->fetch();
-$check_user_name = $name_box_after[0];
 print 'この祭りのデータは';
 print $check_user_name;
 print 'が作った';

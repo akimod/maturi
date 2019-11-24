@@ -1,3 +1,11 @@
+
+<!--   このファイルは現在しようしていません　全ての機能はmaturi_after_loginとkeiziに統合しました ->
+
+
+
+
+
+
 <?php
 include('session.php');
 

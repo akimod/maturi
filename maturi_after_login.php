@@ -38,6 +38,77 @@ print <<< test
 test;
 
 }
+//ファイルアップロード用
+try{
+    //ファイルアップロードがあったとき
+    if (isset($_FILES['upfile']['error']) && is_int($_FILES['upfile']['error']) && $_FILES["upfile"]["name"] !== ""){
+        //エラーチェック
+        switch ($_FILES['upfile']['error']) {
+            case UPLOAD_ERR_OK: // OK
+                break;
+            case UPLOAD_ERR_NO_FILE:   // 未選択
+                throw new RuntimeException('ファイルが選択されていません', 400);
+            case UPLOAD_ERR_INI_SIZE:  // php.ini定義の最大サイズ超過
+                throw new RuntimeException('ファイルサイズが大きすぎます', 400);
+            default:
+                throw new RuntimeException('その他のエラーが発生しました', 500);
+        }
+
+        //画像・動画をバイナリデータにする．
+        $raw_data = file_get_contents($_FILES['upfile']['tmp_name']);
+
+        //拡張子を見る
+        $tmp = pathinfo($_FILES["upfile"]["name"]);
+        $extension = $tmp["extension"];
+        if($extension === "jpg" || $extension === "jpeg" || $extension === "JPG" || $extension === "JPEG"){
+            $extension = "jpeg";
+        }
+        elseif($extension === "png" || $extension === "PNG"){
+            $extension = "png";
+        }
+        elseif($extension === "gif" || $extension === "GIF"){
+            $extension = "gif";
+        }
+        elseif($extension === "mp4" || $extension === "MP4"){
+            $extension = "mp4";
+        }
+        else{
+            echo "非対応ファイルです．<br/>";
+            echo ("<a href=\"media_index.php\">戻る</a><br/>");
+            exit(1);
+        }
+
+        //DBに格納するファイルネーム設定
+        //サーバー側の一時的なファイルネームと取得時刻を結合した文字列にsha256をかける．
+        $date = getdate();
+        $fname = $_FILES["upfile"]["tmp_name"].$date["year"].$date["mon"].$date["mday"].$date["hours"].$date["minutes"].$date["seconds"];
+        $fname = hash("sha256", $fname);
+        //祭りの名前
+        //$matu_name=isset($_GET["su"])? htmlspecialchars($_GET["su"]):null;
+        //画像・動画をDBに格納．
+        $su_d=isset($_POST["su"])? htmlspecialchars($_POST["su"]):null;
+        $sql = "INSERT INTO maturi_media(maturi_user_name,fname, extension, raw_data,matu_name) VALUES (:maturi_user_name,:fname, :extension, :raw_data,:matu_name);";
+        $stmt = $s->prepare($sql);
+        $stmt -> bindValue(":maturi_user_name",$login_session, PDO::PARAM_STR);
+        $stmt -> bindValue(":fname",$fname, PDO::PARAM_STR);
+        $stmt -> bindValue(":extension",$extension, PDO::PARAM_STR);
+        $stmt -> bindValue(":raw_data",$raw_data, PDO::PARAM_STR);
+        $stmt -> bindValue(":matu_name",$su_d, PDO::PARAM_STR);
+        $stmt -> execute();
+
+    }
+
+}
+catch(PDOException $e){
+    echo("<p>500 Inertnal Server Error</p>");
+    exit($e->getMessage());
+}
+
+
+
+
+
+
 
 /***   ユーザー別表記テスト用スレッド end **/
 /***コメントだよどうしようかな/
@@ -77,8 +148,8 @@ $ip=getenv("REMOTE_ADDR");
 
 /***************** スレッド名の変数$su_dにデータがあればtbj0に挿入 *********/
 
-$su_d=isset($_GET["su"])? htmlspecialchars($_GET["su"]):null;
-$description_d=isset($_GET["description"])? htmlspecialchars($_GET["description"]):null;
+$su_d=isset($_POST["su"])? htmlspecialchars($_POST["su"]):null;
+$description_d=isset($_POST["description"])? htmlspecialchars($_POST["description"]):null;
 
 try{
   $s->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -122,13 +193,18 @@ print <<<eot3
 
 	<br>
 
-	<form method="GET" action="maturi_after_login.php">
+	<form method="POST" enctype="multipart/form-data" action="maturi_after_login.php">
 
 	新しく投稿する祭りのタイトル
 
 	<input type="text" name="su" size="50">
   <br>
 	<textarea name="description" rows = "10" cols="70"></textarea>
+  <br>
+    <label>画像/動画アップロード</label>
+    <input type="file" name="upfile">
+    <br>
+    ※画像はjpeg方式，png方式，gif方式に対応しています．動画はmp4方式のみ対応しています．<br>
 	<div><input type="submit" value="作成"></div>
 	</form>
 	<hr>
@@ -138,7 +214,7 @@ print <<<eot3
 	<span style="font-size:20pt">(祭りの投稿を削除)</span>
 	<a href="keizi_syokika.php">祭りの投稿を削除するにはここをクリック</a>
 	<hr>
-	<span style="font-size:20pt">(祭りの画像、動画を投稿したい方)</span>
+	<span style="font-size:20pt">(祭りの画像、動画を投稿したい方　*現在は使用停止中)</span>
 	<a href="media_index.php">ここをクリック</a>
 	<hr>
 
