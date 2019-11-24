@@ -72,7 +72,7 @@ print '<hr>';
 
 
 try{
-$sql = "SELECT * FROM maturi_media where maturi_user_name like '$check_user_name'";
+$sql = "SELECT * FROM maturi_media where matu_name like '$maturi_title'";
 $stmt = $s->prepare($sql);
 $stmt -> execute();
 while ($row = $stmt -> fetch(PDO::FETCH_ASSOC)){
@@ -149,6 +149,7 @@ eot3;
 
 $check_attend_one=$s->query("select * from maturi_attend WHERE attend_user_name like '$login_session' and attend_matu_name like '$maturi_title'");
 $check_attend_two=$check_attend_one->fetch();
+if($login_type == "participant" ){
 if($check_attend_two[0]<>""){
 	print "この祭りには参加登録済みです";
 }else{
@@ -159,6 +160,7 @@ print <<<eot4
 		<input type="submit" value="参加する">
 		</form>
 eot4;
+}
 }
 
 print <<<eot5

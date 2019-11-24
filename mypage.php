@@ -31,10 +31,12 @@ print <<<eot1
     <br>
     <b id="welcome">パスワード :  $login_password </b>
     <br>
+    <b id="welcome">ユーザータイプ :  $login_type </b>
+    <br>
     <a href="user_update.php">ユーザー情報を編集する</a>
 eot1;
 
-
+if($login_type == "participant"){
 print <<<eot2
     <div>参加している祭りがある場合</div>
 eot2;
@@ -42,7 +44,7 @@ $check_attend_one=$s->query("select * from maturi_attend WHERE attend_user_name 
 while($check_attend_two=$check_attend_one->fetch()){
   print "$check_attend_two[2]";
   print "<br>";
-
+}
 }
 print "<hr>";
 $check_organize_one=$s->query("select * from maturi_info WHERE maturi_user_name like '$login_session'");
@@ -71,9 +73,14 @@ while($check_organize_two=$check_organize_one->fetch()){
   print "<br>";
   $check_human_one=$s->query("select attend_user_name from maturi_attend where attend_matu_name like '$check_organize_two[1]'");
   while($check_human_two=$check_human_one->fetch()){
-    print "この祭りに参加している人は";
-    print "$check_human_two[0]";
-    print "さんです";
+print <<<eot2_1
+    <form action="user_profile.php" method="GET">
+    この祭りに参加している人は
+    <input class="text" type="submit" name="profile" value="$check_human_two[0]" />
+    さんです
+    </form>
+
+eot2_1;
     print "<br>";
   }
   print "<hr>";
@@ -82,7 +89,13 @@ print <<<eot2_1
     <input class="button" type="submit" name="active" value="この投稿を削除する" />
     <input type='hidden' name='delete' value='$check_organize_two[1]'>
   </form>
+  <br>
+  <form action="maturi_update.php" method="GET">
+    <input class="button" type="submit" name="update" value="この投稿を編集する" />
+    <input type='hidden' name='maturi_update' value='$check_organize_two[1]'>
+  </form>
   <hr>
+
 eot2_1;
 }
 

@@ -10,7 +10,8 @@ $ses_sql=mysqli_query($connection,"select * from login where username='$user_che
 $row = mysqli_fetch_assoc($ses_sql);
 $login_session =$row['username'];//ユーザー名が格納されることになる。
 $login_password =$row['password'];//パスワードが格納されることになる。
-$login_id =$row['id'];//パスワードが格納されることになる。
+$login_id =$row['id'];//idが格納されることになる。
+$login_type =$row['user_type'];//idが格納されることになる。
 if(!isset($login_session)){
 mysqli_close($connection); // Closing Connection
 header('Location: index.php'); // Redirecting To Home Page
