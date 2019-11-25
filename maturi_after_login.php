@@ -11,18 +11,6 @@ require_once("C:\MAMP\htdocs\data\db_info.php");
 $s = new pdo("mysql:host=$SERV;dbname=$DBNM",$USER,$PASS);
 
 /*****************  タイトル,画像等の表示 *********/
-print <<<eot0
-<h2 id="logout"><a href="logout.php">Log Out</a></h2>
-eot0;
-print <<<eot0
-<h2 id="mypage"><a href="mypage.php">My Page</a></h2>
-eot0;
-/**    ユーザー別表記テスト用スレッド**/
-
-print <<< user_status
-<h2>ようこそ $login_session さん</h2>
-<h2>ユーザータイプ $login_type</h2>
-user_status;
 
 //ファイルアップロード用
 try{
@@ -97,33 +85,28 @@ catch(PDOException $e){
 
 
 /***   ユーザー別表記テスト用スレッド end **/
-/***コメントだよどうしようかな/
 print <<<eot1
-
 	<!DOCTYPE html>
-
 	<html>
-
 	<head>
-
 	<meta charset="utf-8">
-
 	<title>祭り参加者マッチングページ</title>
-
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+  <link href="maturi.css" rel="stylesheet" type="text/css">
 	</head>
-
+  <header>
+  <div class="top">
+    <ul>
+      <li><a href="logout.php">Log Out</a></li>
+      <li><a href="mypage.php">My Page</a></li>
+      <li><a href="maturi_after_login.php">メイン画面へ</a></li>
+    </ul>
+  </div>
+  </header>
 	<body style="background-color:white" class="text-center">
-
-	<div class="keizi_top_title narrow" style="font-size:35pt;background-color:#c1d114">
-
-	祭りマッチングページトップ
-
-	</div>
-
-	<h2>見たい祭りの番号をクリックしてください</h2>
-
-	<hr>
-
+  <br>
+  <h2>ようこそ $login_session さん</h2>
+  <h2>ユーザータイプは $login_type です</h2>
 eot1;
 
 

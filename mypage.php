@@ -21,8 +21,19 @@ print <<<eot1
 <html>
   <head>
   <title>MY Page</title>
+  	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link href="maturi.css" rel="stylesheet" type="text/css">
   </head>
   <body>
+  <header>
+  <div class="top">
+    <ul>
+      <li><a href="logout.php">Log Out</a></li>
+      <li><a href="mypage.php">My Page</a></li>
+      <li><a href="maturi_after_login.php">メイン画面へ</a></li>
+    </ul>
+  </div>
+  </header>
   <div id="mypage">
     <h1>ここはマイページです。</h1>
     <b id="welcome">ユーザーID :  $login_id </b>
@@ -101,9 +112,6 @@ eot2_1;
 
 //マイページ以外のリンクなど
 print <<<eot3
-    <b id="logout"><a href="logout.php">Log Out</a></b>
-    <hr>
-    <b id="maturi"><a href="maturi_after_login.php">ログイン後トップ画面へ</a></b>
     </div>
   </body>
 </html>

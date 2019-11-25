@@ -31,7 +31,7 @@ print <<<eot1
     </div>
     <br>
     <div>
-    <h3 id="maturi"><a href="maturi_top.php">maturi_topへ戻る</a></h3>
+    <h3 id="maturi"><a href="maturi_top.php">トップページへ戻る</a></h3>
     </div>
 eot1;
 

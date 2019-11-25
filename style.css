@@ -25,7 +25,6 @@ margin-bottom:30px
 }
 #login {
 width:300px;
-float:left;
 border-radius:10px;
 font-family:raleway;
 border:2px solid #ccc;
@@ -59,8 +58,7 @@ font-size:20px;
 background-color:#DCE6F7
 }
 #logout {
-float:right;
-padding:5px;
+padding:10px;
 border:dashed 1px gray
 }
 a {

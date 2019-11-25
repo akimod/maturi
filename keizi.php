@@ -137,7 +137,7 @@ print <<<eot3
 	<input type ="submit" value="送信">
 	</form>
 	<hr>
-	<a href="maturi_after_login.php">スレッド一覧に戻る</a>
+	<a href="maturi_after_login.php">メイン画面に戻る</a>
 	<br>
 eot3;
 

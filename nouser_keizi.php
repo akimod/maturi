@@ -61,7 +61,7 @@ eot2;
 //
 //祭り説明世の画像もしくは動画を表示する
 //DBから取得して表示する．
-$sql = "SELECT * FROM maturi_media ORDER BY id;";
+$sql = "SELECT * FROM maturi_media where matu_name like '$maturi_title'";
 $stmt = $s->prepare($sql);
 $stmt -> execute();
 while ($row = $stmt -> fetch(PDO::FETCH_ASSOC)){
@@ -99,7 +99,7 @@ while($kekka=$re->fetch()){
 
 print <<<eot3
 	<hr>
-	<a href="maturi_top.php">スレッド一覧に戻る</a>
+	<a href="maturi_top.php">トップページに戻る</a>
 	</body>
 	</html>
 eot3;
